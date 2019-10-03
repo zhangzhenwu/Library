@@ -38,8 +38,8 @@ function App() {
             display: "flex",
             // alignItems: "center",
             justifyContent: "center",
-            height: "100vh",
-            backgroundColor: "red"
+            height: "100vh"
+            // backgroundColor: "red"
           }}
         >
           <AddBook></AddBook>

@@ -3,8 +3,6 @@ import { InputItem, Button, List, Toast } from "antd-mobile";
 import { queryBook } from "../../apis/bookApi.js";
 import "./bookList.css";
 const Item = List.Item;
-const Brief = Item.Brief;
-
 export default class AddBook extends React.Component {
   constructor() {
     super();
@@ -31,21 +29,30 @@ export default class AddBook extends React.Component {
         bookList: prevBookList
       },
       () => {
-        this.inputRef.focus();
+        const codeDom = document.getElementById("code");
+        codeDom.focus();
+        codeDom.select();
         console.log(this.state.bookList);
       }
     );
   };
+  onkeydown = () => {
+    if (window.event.keyCode === 13) {
+      this.queryBook();
+    }
+  };
   render() {
     const bookList = this.state.bookList;
     return (
-      <div className="add-wrap-container">
+      <div className="add-wrap-container" onKeyDown={this.onkeydown}>
         <InputItem
+          id="code"
           placeholder="请输入code"
           clear
           ref={el => (this.inputRef = el)}
+          value={this.state.code}
           moneyKeyboardAlign="left"
-          onBlur={val => {
+          onChange={val => {
             this.setState({
               code: val
             });
@@ -57,7 +64,8 @@ export default class AddBook extends React.Component {
           placeholder="请输入书名"
           clear
           moneyKeyboardAlign="left"
-          onBlur={val => {
+          value={this.state.bookName}
+          onChange={val => {
             this.setState({
               bookName: val
             });
@@ -76,6 +84,7 @@ export default class AddBook extends React.Component {
                 // thumb={book.photo}
                 multipleLine
                 onClick={() => {}}
+                key={book.book_code}
               >
                 <div className="listcontainer">
                   <div className="img">

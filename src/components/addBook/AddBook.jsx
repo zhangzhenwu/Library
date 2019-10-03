@@ -47,28 +47,36 @@ class AddBook extends React.Component {
       this.state.code,
       this.state.bookPos
     ).then(res => {
-      this.inputRef.focus();
+      const codeDom = document.getElementById("code");
+      codeDom.focus();
       if (res.data && res.data.code !== 0) {
         // Toast.fail(res.data.msg, 1);
         alert(res.data.msg);
         return;
       }
+      codeDom.select();
       Toast.success("Add success !!!", 1);
-      this.setState({
-        code: ""
-      });
+      // this.setState({
+      //   code: ""
+      // });
     });
+  };
+  onkeydown = () => {
+    if (window.event.keyCode === 13) {
+      this.addBook();
+    }
   };
   render() {
     const { getFieldProps } = this.props.form;
     return (
-      <div className="add-wrap-container">
+      <div className="add-wrap-container" onKeyDown={this.onkeydown}>
         <InputItem
           // type="number"
           placeholder="请输入key"
           clear
           moneyKeyboardAlign="left"
-          onBlur={val => {
+          value={this.state.key}
+          onChange={val => {
             this.setState({
               key: val
             });
@@ -95,8 +103,10 @@ class AddBook extends React.Component {
           placeholder="请输入条码"
           clear
           moneyKeyboardAlign="left"
+          id="code"
+          value={this.state.code}
           ref={el => (this.inputRef = el)}
-          onBlur={val => {
+          onChange={val => {
             this.setState({
               code: val
             });
