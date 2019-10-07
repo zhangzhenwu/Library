@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const HOST = "http://youbei.keeplearning.site"; //"http://192.168.1.7:8080";
+const HOST = "http://192.168.1.7:8080";
 
 export function addBook(key, forceUpdate, code, bookPos) {
   return axios.post(
