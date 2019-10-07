@@ -53,7 +53,7 @@ class AddBook extends React.Component {
       this.state.code,
       this.state.bookPos
     ).then(res => {
-      const codeDom = document.getElementById("code");
+      const codeDom = document.getElementById("addCode");
       codeDom.focus();
       if (res.data && res.data.code !== 0) {
         // Toast.fail(res.data.msg, 1);
@@ -62,16 +62,17 @@ class AddBook extends React.Component {
       }
       // 更新local key 值
       localStorage.setItem("book_key", this.state.key);
-      codeDom.select();
-      Toast.success("Add success !!!", 1);
       this.setState({
         code: ""
       });
+      Toast.success("Add success !!!", 1);
     });
   };
   onkeydown = () => {
     if (window.event.keyCode === 13) {
-      this.addBook();
+      setTimeout(() => {
+        this.addBook();
+      }, 500);
     }
   };
   render() {
@@ -111,7 +112,7 @@ class AddBook extends React.Component {
           placeholder="请输入条码"
           clear
           moneyKeyboardAlign="left"
-          id="code"
+          id="addCode"
           value={this.state.code}
           ref={el => (this.inputRef = el)}
           onChange={val => {

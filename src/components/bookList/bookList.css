@@ -16,3 +16,7 @@
   flex-direction: column;
   margin-left: 20px;
 }
+.listcontainer .listtext span {
+  flex: 1;
+  flex-wrap: nowrap;
+}

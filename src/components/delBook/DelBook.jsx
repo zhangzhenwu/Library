@@ -22,7 +22,7 @@ export default class AddBook extends React.Component {
     const res = await delBook(this.state.delKey, this.state.code);
     if (res.data && res.data.code == 0) {
       Toast.success("Del success !!!", 1);
-      const codeDom = document.getElementById("code");
+      const codeDom = document.getElementById("delCode");
       codeDom.focus();
       codeDom.select();
       this.setState({
@@ -34,7 +34,9 @@ export default class AddBook extends React.Component {
   };
   onkeydown = () => {
     if (window.event.keyCode === 13) {
-      this.handleDelBook();
+      setTimeout(() => {
+        this.handleDelBook();
+      }, 500);
     }
   };
   render() {
@@ -57,7 +59,7 @@ export default class AddBook extends React.Component {
           ref={el => (this.inputRef = el)}
           placeholder="请输入code"
           clear
-          id="code"
+          id="delCode"
           moneyKeyboardAlign="left"
           value={this.state.code}
           onChange={val => {

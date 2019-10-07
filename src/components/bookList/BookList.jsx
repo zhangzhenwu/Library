@@ -85,9 +85,13 @@ export default class AddBook extends React.Component {
         </Button>
         <List className="my-list">
           {bookList.map(book => {
+            const bname =
+              book.book_name.length > 17
+                ? book.book_name.substr(0, 17) + "..."
+                : book.book_name;
             return (
               <Item
-                arrow="horizontal"
+                // arrow="horizontal"
                 // thumb={book.photo}
                 multipleLine
                 onClick={() => {}}
@@ -98,7 +102,7 @@ export default class AddBook extends React.Component {
                     <img src={book.photo}></img>
                   </div>
                   <div className="listtext">
-                    <span>{book.book_name}</span>
+                    <span>{bname}</span>
                     <span>{book.position_name}</span>
                     <span>{book.book_code}</span>
                     <span>{book.book_status}</span>
