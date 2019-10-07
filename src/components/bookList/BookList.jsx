@@ -7,22 +7,31 @@ export default class AddBook extends React.Component {
   constructor() {
     super();
     this.state = {
-      bookName: "",
       code: "",
       bookList: []
     };
   }
+  deleteList = () => {
+    this.setState({
+      bookList: []
+    });
+  };
   queryBook = async () => {
-    const bookRes = await queryBook(this.state.code, this.state.bookName);
-    const resBookList = bookRes.data.data;
-    if (!resBookList) {
-      Toast.success("暂无数据", 1);
+    const bookRes = await queryBook(this.state.code);
+    if (bookRes.data && bookRes.data.code !== 0) {
+      alert(bookRes.data.msg);
       return;
     }
+    const resBookList = bookRes.data.data;
+    // if (!resBookList) {
+    //   Toast.success("暂无数据", 1);
+    //   return;
+    // }
     let prevBookList = this.state.bookList || [];
     prevBookList = resBookList.concat(prevBookList);
+    console.log(prevBookList);
     if (prevBookList.length > 50) {
-      prevBookList.splice(49, prevBookList.length - 50);
+      prevBookList.splice(50, prevBookList.length - 50);
     }
     this.setState(
       {
@@ -31,14 +40,18 @@ export default class AddBook extends React.Component {
       () => {
         const codeDom = document.getElementById("code");
         codeDom.focus();
-        codeDom.select();
+        this.setState({
+          code: ""
+        });
         console.log(this.state.bookList);
       }
     );
   };
   onkeydown = () => {
     if (window.event.keyCode === 13) {
-      this.queryBook();
+      setTimeout(() => {
+        this.queryBook();
+      }, 500);
     }
   };
   render() {
@@ -47,7 +60,7 @@ export default class AddBook extends React.Component {
       <div className="add-wrap-container" onKeyDown={this.onkeydown}>
         <InputItem
           id="code"
-          placeholder="请输入code"
+          placeholder="请输入code或书名"
           clear
           ref={el => (this.inputRef = el)}
           value={this.state.code}
@@ -58,23 +71,17 @@ export default class AddBook extends React.Component {
             });
           }}
         >
-          输入code
-        </InputItem>
-        <InputItem
-          placeholder="请输入书名"
-          clear
-          moneyKeyboardAlign="left"
-          value={this.state.bookName}
-          onChange={val => {
-            this.setState({
-              bookName: val
-            });
-          }}
-        >
-          输入书名
+          code
         </InputItem>
         <Button type="primary" onClick={this.queryBook}>
           查询
+        </Button>
+        <Button
+          type="primary"
+          style={{ marginTop: "6px" }}
+          onClick={this.deleteList}
+        >
+          清空列表
         </Button>
         <List className="my-list">
           {bookList.map(book => {
@@ -84,7 +91,7 @@ export default class AddBook extends React.Component {
                 // thumb={book.photo}
                 multipleLine
                 onClick={() => {}}
-                key={book.book_code}
+                key={Math.random()}
               >
                 <div className="listcontainer">
                   <div className="img">
@@ -95,6 +102,7 @@ export default class AddBook extends React.Component {
                     <span>{book.position_name}</span>
                     <span>{book.book_code}</span>
                     <span>{book.book_status}</span>
+                    <span>{book.phtitle}</span>
                   </div>
                 </div>
               </Item>

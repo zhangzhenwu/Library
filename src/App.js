@@ -3,11 +3,13 @@ import { Tabs, WhiteSpace, Badge } from "antd-mobile";
 import AddBook from "../src/components/addBook/AddBook";
 import DelBook from "../src/components/delBook/DelBook";
 import BookList from "../src/components/bookList/BookList";
+import Msg from "../src/components/msgForYoubei/Msg";
 function App() {
   const tabs = [
     { title: <Badge>图书查询</Badge> },
     { title: <Badge>图书添加</Badge> },
-    { title: <Badge>图书删除</Badge> }
+    { title: <Badge>图书删除</Badge> },
+    { title: <Badge>信息</Badge> }
   ];
   return (
     <div>
@@ -54,6 +56,17 @@ function App() {
           }}
         >
           <DelBook></DelBook>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            // alignItems: "center",
+            justifyContent: "center",
+            height: "100vh",
+            backgroundColor: "#fff"
+          }}
+        >
+          <Msg></Msg>
         </div>
       </Tabs>
       <WhiteSpace />

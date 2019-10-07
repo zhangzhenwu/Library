@@ -6,20 +6,31 @@ export default class AddBook extends React.Component {
   constructor() {
     super();
     this.state = {
-      key: "",
+      delKey: "",
       code: ""
     };
   }
+  componentDidMount() {
+    const prevKey = localStorage.getItem("book_key");
+    if (prevKey) {
+      this.setState({
+        delKey: prevKey
+      });
+    }
+  }
   handleDelBook = async () => {
-    const res = await delBook(this.state.key, this.state.code);
+    const res = await delBook(this.state.delKey, this.state.code);
     if (res.data && res.data.code == 0) {
       Toast.success("Del success !!!", 1);
       const codeDom = document.getElementById("code");
       codeDom.focus();
       codeDom.select();
+      this.setState({
+        code: ""
+      });
       return;
     }
-    alert("删除失败");
+    alert(res.data.msg);
   };
   onkeydown = () => {
     if (window.event.keyCode === 13) {
@@ -32,11 +43,11 @@ export default class AddBook extends React.Component {
         <InputItem
           placeholder="请输入key"
           clear
-          // value={this.state.key}
+          value={this.state.delKey}
           moneyKeyboardAlign="left"
-          onBlur={val => {
+          onChange={val => {
             this.setState({
-              key: val
+              delKey: val
             });
           }}
         >

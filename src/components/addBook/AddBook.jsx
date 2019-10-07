@@ -11,13 +11,19 @@ class AddBook extends React.Component {
     this.state = {
       isChecked: false,
       district: [],
-      bookPos: "请选择书架",
+      bookPos: "",
       key: "",
       forceUpdate: 0,
       code: ""
     };
   }
   async componentDidMount() {
+    const prevKey = localStorage.getItem("book_key");
+    if (prevKey) {
+      this.setState({
+        key: prevKey
+      });
+    }
     const resPos = await queryPosition();
     const bookList = resPos.data.positon;
     const districtList = bookList.map(pos => {
@@ -54,11 +60,13 @@ class AddBook extends React.Component {
         alert(res.data.msg);
         return;
       }
+      // 更新local key 值
+      localStorage.setItem("book_key", this.state.key);
       codeDom.select();
       Toast.success("Add success !!!", 1);
-      // this.setState({
-      //   code: ""
-      // });
+      this.setState({
+        code: ""
+      });
     });
   };
   onkeydown = () => {
